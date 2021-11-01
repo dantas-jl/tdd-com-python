@@ -1,9 +1,9 @@
+from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
-import unittest
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
     
     def setUp(self):
         self.browser = webdriver.Firefox()
@@ -20,7 +20,7 @@ class NewVisitorTest(unittest.TestCase):
         
         #Edith ouviu falar de uma nova aplicação online interessante para
         #lista de tarefas. Ela decide verificar sua homepage
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
 
         #Ela percebe que o título da página e o cabeçalho mencionam lista de tarefas (to-do)
         self.assertIn('To-Do', self.browser.title)
@@ -65,5 +65,3 @@ class NewVisitorTest(unittest.TestCase):
 
         #Ela acessa esse URL - sua lista de tarefas continua lá.
         
-if __name__ == '__main__':
-    unittest.main(warnings='ignore')
