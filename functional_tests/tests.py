@@ -61,8 +61,6 @@ class NewVisitorTest(LiveServerTestCase):
         input_box.send_keys(Keys.ENTER)        
 
         #A página é atualizada novamente e agora mostra os dois itens em sua lista
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
         self.wait_for_row_in_list_table('2: Use peacock feathers to make a fly')
         self.wait_for_row_in_list_table('1: Buy peacock feathers')
 
@@ -88,7 +86,7 @@ class NewVisitorTest(LiveServerTestCase):
         
         #Francis acessa a página inicial. Não há nenhum sinal da lista de Edith
         self.browser.get(self.live_server_url)
-        page_text = self.browser.find_elements_by_tag_name('body').text
+        page_text = self.browser.find_element_by_tag_name('body').text
         self.assertNotIn('Buy peacock feathers', page_text)
         self.assertNotIn('make a fly', page_text)
 
@@ -105,7 +103,7 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertNotEqual(francis_lists_url, edith_lists_url)
 
         #Novamente, não há nenhum sinal da lista de Edith
-        page_text = self.browser.find_elements_by_tag_name('body').text
+        page_text = self.browser.find_element_by_tag_name('body').text
         self.assertNotIn('Buy peacock feathers', page_text)
         self.assertIn('Buy milk', page_text)
 
