@@ -1,4 +1,3 @@
-from fabric.context_managers import settings
 from fabric.contrib.files import append, exists, sed
 from fabric.api import env, local, run
 import random
@@ -28,10 +27,10 @@ def _get_latest_source(source_folder):
     run(f'cd {source_folder} && git reset --hard {current_commit}')
 
 def _update_settings(source_folder, site_name):
-    settings_path = source_folder + 'superlists/settings.py'
-    sed(settings_path, "DEBUG=True", "DEBUG=False")
+    settings_path = source_folder + '/superlists/settings.py'
+    sed(settings_path, "DEBUG = True", "DEBUG = False")
     sed(settings_path,
-        'ALLOWED_HOSTS=.+$',
+        'ALLOWED_HOSTS = .+$',
         f'ALLOWED_HOSTS = ["{site_name}"]'
     )
     secret_key_file = source_folder + '/superlists/secret_key.py'
@@ -44,18 +43,18 @@ def _update_settings(source_folder, site_name):
 def _update_virtualenv(source_folder):
     virtualenv_folder = source_folder + '/../virtualenv'
     if not exists(virtualenv_folder + '/bin/pip'):
-        run(f'python3.6 -m venv {virtualenv_folder}')
+        run(f'python3.8 -m venv {virtualenv_folder}')
     run(f'{virtualenv_folder}/bin/pip install -r {source_folder}/requirements.txt')
 
 def _update_static_files(source_folder):
     run(
        f'cd {source_folder}'
-       '&& ../virtualenv/bin/python manage.py collectstatic --noinput'
+       ' && ../virtualenv/bin/python manage.py collectstatic --noinput'
     )
 
 def _update_database(source_folder):
     run(
         f'cd {source_folder}'
-       '&& ../virtualenv/bin/python manage.py migrate --noinput'
+       ' && ../virtualenv/bin/python manage.py migrate --noinput'
     )
         
